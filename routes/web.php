@@ -19,23 +19,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/tickets', [TicketController::class, 'index'])
-        ->middleware('permission:ver tickets')
+        ->middleware(['verified', 'permission:ver tickets'])
         ->name('tickets.index');
 
     Route::get('/tickets/create', [TicketController::class, 'create'])
-        ->middleware('permission:crear tickets')
+        ->middleware(['verified', 'permission:crear tickets'])
         ->name('tickets.create');
 
     Route::post('/tickets', [TicketController::class, 'store'])
-        ->middleware('permission:crear tickets')
+        ->middleware(['verified', 'permission:crear tickets'])
         ->name('tickets.store');
 
     Route::get('/tickets/manage', [TicketController::class, 'manage'])
-        ->middleware('permission:gestionar tickets')
+        ->middleware(['verified', 'permission:gestionar tickets'])
         ->name('tickets.manage');
 });
 
-Route::middleware(['auth', 'role:administrador'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:administrador'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])
         ->middleware('permission:ver usuarios')
         ->name('users.index');
